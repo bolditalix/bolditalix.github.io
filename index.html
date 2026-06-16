@@ -1,1 +1,358 @@
-<h1>Hello World</h1>
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>OTBY Live</title>
+  <meta name="description" content="Watch OTBY live on Twitch." />
+  <style>
+    :root {
+      --bg: #07000f;
+      --purple: #9146ff;
+      --pink: #ff4fd8;
+      --cyan: #48f7ff;
+      --white: #f7ecff;
+      --glass: rgba(255, 255, 255, 0.08);
+    }
+
+    * { box-sizing: border-box; }
+
+    html, body {
+      margin: 0;
+      min-height: 100%;
+      overflow-x: hidden;
+      font-family: Inter, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+      color: var(--white);
+      background:
+        radial-gradient(circle at 20% 20%, rgba(145, 70, 255, .45), transparent 28%),
+        radial-gradient(circle at 80% 15%, rgba(255, 79, 216, .35), transparent 30%),
+        radial-gradient(circle at 50% 90%, rgba(72, 247, 255, .22), transparent 35%),
+        linear-gradient(135deg, #07000f, #16002e 45%, #05000c);
+    }
+
+    body::before {
+      content: "";
+      position: fixed;
+      inset: 0;
+      background-image:
+        linear-gradient(rgba(255,255,255,.05) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(255,255,255,.05) 1px, transparent 1px);
+      background-size: 52px 52px;
+      mask-image: radial-gradient(circle, black 20%, transparent 78%);
+      pointer-events: none;
+      animation: gridMove 16s linear infinite;
+    }
+
+    @keyframes gridMove {
+      from { transform: translateY(0); }
+      to { transform: translateY(52px); }
+    }
+
+    .orbs span {
+      position: fixed;
+      width: 18rem;
+      height: 18rem;
+      border-radius: 50%;
+      filter: blur(35px);
+      opacity: .35;
+      pointer-events: none;
+      animation: float 12s ease-in-out infinite;
+    }
+
+    .orbs span:nth-child(1) { background: var(--purple); top: 8%; left: 5%; }
+    .orbs span:nth-child(2) { background: var(--pink); bottom: 8%; right: 8%; animation-delay: -4s; }
+    .orbs span:nth-child(3) { background: var(--cyan); top: 35%; right: 25%; animation-delay: -7s; }
+
+    @keyframes float {
+      0%, 100% { transform: translate(0, 0) scale(1); }
+      50% { transform: translate(35px, -45px) scale(1.15); }
+    }
+
+    .wrap {
+      position: relative;
+      min-height: 100vh;
+      display: grid;
+      place-items: center;
+      padding: 32px;
+    }
+
+    .card {
+      width: min(1120px, 100%);
+      border: 1px solid rgba(255,255,255,.18);
+      background: linear-gradient(135deg, rgba(255,255,255,.12), rgba(255,255,255,.04));
+      backdrop-filter: blur(18px);
+      border-radius: 34px;
+      padding: clamp(28px, 6vw, 74px);
+      box-shadow: 0 30px 120px rgba(0,0,0,.55), inset 0 0 80px rgba(145,70,255,.12);
+      overflow: hidden;
+    }
+
+    .card::before {
+      content: "";
+      position: absolute;
+      inset: -2px;
+      background: conic-gradient(from 180deg, transparent, var(--purple), var(--pink), var(--cyan), transparent);
+      opacity: .35;
+      filter: blur(30px);
+      z-index: -1;
+      animation: spin 8s linear infinite;
+    }
+
+    @keyframes spin { to { transform: rotate(360deg); } }
+
+    .badge {
+      display: inline-flex;
+      gap: 10px;
+      align-items: center;
+      padding: 10px 14px;
+      border-radius: 999px;
+      background: rgba(145,70,255,.18);
+      border: 1px solid rgba(255,255,255,.18);
+      letter-spacing: .12em;
+      text-transform: uppercase;
+      font-size: 12px;
+      font-weight: 800;
+    }
+
+    .pulse {
+      width: 10px;
+      height: 10px;
+      border-radius: 50%;
+      background: #00ff95;
+      box-shadow: 0 0 0 0 rgba(0,255,149,.8);
+      animation: pulse 1.4s infinite;
+    }
+
+    @keyframes pulse {
+      70% { box-shadow: 0 0 0 12px rgba(0,255,149,0); }
+      100% { box-shadow: 0 0 0 0 rgba(0,255,149,0); }
+    }
+
+    h1 {
+      margin: 26px 0 14px;
+      font-size: clamp(58px, 12vw, 158px);
+      line-height: .82;
+      letter-spacing: -.08em;
+      text-transform: uppercase;
+      text-shadow: 0 0 42px rgba(145,70,255,.9);
+    }
+
+    .gradient {
+      background: linear-gradient(90deg, #fff, #cda8ff, #ff74df, #7dfaff, #fff);
+      background-size: 300%;
+      -webkit-background-clip: text;
+      color: transparent;
+      animation: shine 4s linear infinite;
+    }
+
+    @keyframes shine {
+      from { background-position: 0%; }
+      to { background-position: 300%; }
+    }
+
+    .sub {
+      max-width: 760px;
+      font-size: clamp(18px, 2.5vw, 28px);
+      color: rgba(247,236,255,.82);
+      line-height: 1.45;
+    }
+
+    .actions {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 16px;
+      margin-top: 34px;
+    }
+
+    .btn {
+      position: relative;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 10px;
+      padding: 17px 24px;
+      border-radius: 18px;
+      color: white;
+      text-decoration: none;
+      font-weight: 900;
+      letter-spacing: .02em;
+      background: linear-gradient(135deg, var(--purple), #6c22ff, var(--pink));
+      box-shadow: 0 18px 50px rgba(145,70,255,.4);
+      transition: transform .2s ease, box-shadow .2s ease;
+      isolation: isolate;
+      overflow: hidden;
+    }
+
+    .btn::after {
+      content: "";
+      position: absolute;
+      inset: 0;
+      background: linear-gradient(90deg, transparent, rgba(255,255,255,.35), transparent);
+      transform: translateX(-120%);
+      animation: sweep 2.4s infinite;
+      z-index: -1;
+    }
+
+    @keyframes sweep {
+      50%, 100% { transform: translateX(120%); }
+    }
+
+    .btn:hover {
+      transform: translateY(-4px) scale(1.03);
+      box-shadow: 0 26px 70px rgba(255,79,216,.38);
+    }
+
+    .ghost {
+      background: rgba(255,255,255,.08);
+      border: 1px solid rgba(255,255,255,.18);
+      box-shadow: none;
+    }
+
+    .stats {
+      display: grid;
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+      gap: 14px;
+      margin-top: 44px;
+    }
+
+    .stat {
+      padding: 22px;
+      border-radius: 22px;
+      background: rgba(255,255,255,.075);
+      border: 1px solid rgba(255,255,255,.12);
+      transform: translateY(0);
+      animation: bob 5s ease-in-out infinite;
+    }
+
+    .stat:nth-child(2) { animation-delay: -1.5s; }
+    .stat:nth-child(3) { animation-delay: -3s; }
+
+    @keyframes bob {
+      50% { transform: translateY(-10px); }
+    }
+
+    .stat strong {
+      display: block;
+      font-size: 30px;
+      color: white;
+    }
+
+    .stat span {
+      color: rgba(247,236,255,.7);
+    }
+
+    .ticker {
+      margin-top: 38px;
+      overflow: hidden;
+      border-block: 1px solid rgba(255,255,255,.14);
+      padding: 14px 0;
+      color: rgba(255,255,255,.72);
+      text-transform: uppercase;
+      font-weight: 800;
+      letter-spacing: .14em;
+      white-space: nowrap;
+    }
+
+    .ticker div {
+      display: inline-block;
+      padding-left: 100%;
+      animation: ticker 18s linear infinite;
+    }
+
+    @keyframes ticker {
+      to { transform: translateX(-100%); }
+    }
+
+    .sparkle {
+      position: absolute;
+      width: 6px;
+      height: 6px;
+      border-radius: 50%;
+      background: white;
+      box-shadow: 0 0 18px white;
+      animation: sparkle 2.8s linear infinite;
+    }
+
+    .sparkle:nth-of-type(1) { top: 18%; right: 18%; }
+    .sparkle:nth-of-type(2) { bottom: 22%; left: 12%; animation-delay: -.9s; }
+    .sparkle:nth-of-type(3) { top: 64%; right: 10%; animation-delay: -1.8s; }
+
+    @keyframes sparkle {
+      0%, 100% { opacity: .15; transform: scale(.6); }
+      50% { opacity: 1; transform: scale(1.8); }
+    }
+
+    @media (max-width: 760px) {
+      .stats { grid-template-columns: 1fr; }
+      .actions { flex-direction: column; }
+      .btn { width: 100%; }
+    }
+  </style>
+</head>
+<body>
+  <div class="orbs">
+    <span></span><span></span><span></span>
+  </div>
+
+  <main class="wrap">
+    <i class="sparkle"></i>
+    <i class="sparkle"></i>
+    <i class="sparkle"></i>
+
+    <section class="card">
+      <div class="badge"><span class="pulse"></span> Live energy loading</div>
+
+      <h1><span class="gradient">OTBY</span><br>LIVE</h1>
+
+      <p class="sub">
+        Purple chaos, huge vibes, late-night streams, clutch moments, unfiltered reactions,
+        and whatever else happens when the stream goes live.
+      </p>
+
+      <div class="actions">
+        <a class="btn" href="https://twitch.tv/otby" target="_blank" rel="noopener">
+          Watch on Twitch →
+        </a>
+        <a class="btn ghost" href="https://twitch.tv/otby" target="_blank" rel="noopener">
+          twitch.tv/otby
+        </a>
+      </div>
+
+      <div class="stats">
+        <div class="stat">
+          <strong>LIVE</strong>
+          <span>Pull up when the purple signal hits.</span>
+        </div>
+        <div class="stat">
+          <strong>OTBY</strong>
+          <span>Streams, clips, chaos, and community.</span>
+        </div>
+        <div class="stat">
+          <strong>JOIN</strong>
+          <span>Follow now so you do not miss the next stream.</span>
+        </div>
+      </div>
+
+      <div class="ticker">
+        <div>
+          FOLLOW OTBY ON TWITCH • TWITCH.TV/OTBY • PURPLE MODE ACTIVATED • STREAM STARTING SOON •
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <script>
+    const card = document.querySelector(".card");
+
+    document.addEventListener("mousemove", (e) => {
+      const x = (e.clientX / window.innerWidth - 0.5) * 12;
+      const y = (e.clientY / window.innerHeight - 0.5) * -12;
+      card.style.transform = `perspective(1200px) rotateY(${x}deg) rotateX(${y}deg)`;
+    });
+
+    document.addEventListener("mouseleave", () => {
+      card.style.transform = "perspective(1200px) rotateY(0deg) rotateX(0deg)";
+    });
+  </script>
+</body>
+</html>
